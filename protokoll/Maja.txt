@@ -1,0 +1,6 @@
+start:Mon, 17 May 21 01:20:08 +0200
+start:Mon, 17 May 21 01:20:29 +0200
+start:Mon, 17 May 21 01:23:01 +0200
+start:Mon, 17 May 21 01:25:00 +0200
+Wynik:Mon, 17 May 21 01:25:05 +0200 czas: 6 sekund wynik: false
+Wynik:Mon, 17 May 21 01:31:01 +0200 czas: 362 sekund wynik: false
