@@ -112,7 +112,7 @@ function getSudoku ()
 {
 	// Fast and simple solution for big files
 	$ls = 164;
-	$filename = "sudoku.txt";
+	$filename = "sudoku_simple.txt";
 	$size = filesize ($filename);
 	$lines = $size / $ls;
 	$rand = rand(0, $lines);
@@ -185,7 +185,7 @@ if ($ok != null) {
 	$sudokustr = getSudoku ();
 	$sudoku    = explode(";", $sudokustr);
 
-	echo "<table cellspacing=0 cellpadding=1 border=0 bgcolor=#000000>";
+	echo "<table cellspacing=0 cellpadding=2 border=0 bgcolor=#000000>";
 	$count = 0;
 	for ($x = 0; $x < 9; $x++)
 	{
@@ -240,15 +240,15 @@ $userid=$_GET["uuid"];
 <input type="submit" value="Gotowe" onclick="checkMySudoku2();isStop=true;" style="font-size : 24px; width: 50%; height: 150px;"></nobr>
 <input type="hidden" name="uuid" id="uuid" value=<? echo "'".$_GET["uuid"]."'"; ?> >
 <input type="hidden" name="ergebnis" id="ergebnis" value="" >
-<input type="hidden" name="beginn" id="beginn" value=<? echo "'".round(microtime(true))."'"; ?> style="font-size : 24px; width: 50%; height: 150px;">
+<input type="hidden" name="beginn" id="beginn" value=<? echo "'".round(microtime(true))."'"; ?>">
 <input type="hidden" name="ende" id="ende" value=<? echo "'".$_GET["uuid"]."'"; ?> >
-<input type="button" value="Pokaz rozwiazanie" onclick=<? echo "'".solveMySudoku($userid);"'" ?> style="font-size : 24px; width: 50%; height: 150px;">
+<!--input type="button" value="Pokaz rozwiazanie" onclick=<? echo "'".solveMySudoku($userid);"'" ?> style="font-size : 24px; width: 50%; height: 150px;"-->
 </form></center>
 </td></tr>
 
 </table>
 <table width=100% border=0 cellspacing=0 cellpadding=0>
-<tr><td height=28 valign=top><a class=sudoku target=_blank href=anleitung.html>Instrukcja</a></td><td align=right valign=bottom>
+<tr><td height=28 valign=top><a class=sudoku target=_blank href=instrukcja.html>Instrukcja</a></td><td align=right valign=bottom>
 <tr><td height=28 valign=top><a class=sudoku target=_blank href=https://docs.google.com/forms/d/e/1FAIpQLSd_xqJuy5Bo2q8JtluW9VdGqNTzVkYE5G9cm7uG6kcHc8ikxA/viewform>Ankieta</a></td><td align=right valign=bottom>
 
 <a class=sudokumin href='#'>Sudoku by IBG</a></td>

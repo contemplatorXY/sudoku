@@ -264,7 +264,7 @@ if ($ok != null) {
 
 </table>
 <table width=100% border=0 cellspacing=0 cellpadding=0>
-<tr><td height=28 valign=top><a class=sudoku target=_blank href=anleitung.html>Instrukcja</a></td><td align=right valign=bottom>
+<tr><td height=28 valign=top><a class=sudoku target=_blank href=instrukcja.html>Instrukcja</a></td><td align=right valign=bottom>
 <tr><td height=28 valign=top><a class=sudoku target=_blank href=https://docs.google.com/forms/d/e/1FAIpQLSd_xqJuy5Bo2q8JtluW9VdGqNTzVkYE5G9cm7uG6kcHc8ikxA/viewform>Ankieta</a></td><td align=right valign=bottom>
 
 <a class=sudokumin href='#'>Sudoku by IBG</a></td>

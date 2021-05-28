@@ -41,13 +41,25 @@ function checkMySudoku()
 		ans=bs.cit();
 		return true;
 	} else {
-		//alert ("Sudoku niepoprawne");
+		alert ("Sudoku niepoprawne");
 		return false;
 	}
 }
 
 function checkMySudoku2()
 {
+	let uniqueId = document.getElementById("uniqueid").value
+	let nickname = document.getElementById("nickname").value
+	document.getElementById("sudokuform").onsubmit = function (evt) {
+		let input = document.getElementById("nickname").value;
+
+		if (input.length < 4) {
+			evt.preventDefault();
+			alert("Nick musi sie skladac conajmniej z czterech znakow");
+		}
+	}
+
+	document.getElementById('evaluate').value = 'True';
 	var theSec=new Sudoku();
 	anzSols=0;
 	for (var i=0; i<81; ++i) {
@@ -56,7 +68,10 @@ function checkMySudoku2()
   		if (v>="1" && v<="9") {
 			theSec.vlu(i, parseInt(v));
 		} else {
-			//alert ("Sudoku niepoprawnie rozwiazane");
+			alert ("Sudoku niepoprawnie rozwiazane" + " " + (document.getElementById('nickname').value).trim());
+			if (nickname.length >= 4) {
+				alert ("Twoj unikalny nick name:" + nickname + "_" + uniqueId + " ZAPAMIETAJ i uzyj KONIECZNIE w drugim tescie");
+			}
 			document.getElementById("ergebnis").value = "false";
 			return false;
 	    }
@@ -64,17 +79,62 @@ function checkMySudoku2()
 	var rsp=theSec.sss();
 	var ans="<p>No solution<\/p>";
 	if (anzSols > 0) {
-		//alert ("Sudoku rozwiazane");
+		alert ("Sudoku rozwiazane " + " " + (document.getElementById('nickname').value).trim());
+		if (nickname.length >= 4) {
+			alert ("Twoj unikalny nick name:" + nickname + "_" + uniqueId + " ZAPAMIETAJ i uzyj KONIECZNIE w drugim tescie");
+		}
 		document.getElementById("ergebnis").value = "true";
 		return true;
 	} else {
 		ans=bs.cit();
-		//alert ("Sudoku niepoprawnie rozwiazane");
-		document.getElementById("ergebnis").value = "true";
+		alert ("Sudoku niepoprawnie rozwiazane" + " " + (document.getElementById('nickname').value).trim());
+		if (nickname.length >= 4) {
+			alert ("Twoj unikalny nick name:" + nickname + "_" + uniqueId + " ZAPAMIETAJ i uzyj KONIECZNIE w drugim tescie");
+		}
+		document.getElementById("ergebnis").value = "false";
 		return false;
 	}
 }
+function checkMySudokuFinal()
+{
 
+	let nickname = document.getElementById("nickname").value
+	document.getElementById("sudokuform").onsubmit = function (evt) {
+		let input = document.getElementById("nickname").value;
+
+		if (input.length < 17 ) {
+			evt.preventDefault();
+			alert("Nick musi sie skladac conajmniej z czterech znakow plus _uniqueId (z pierwszego testu)");
+		}
+	}
+
+	document.getElementById('evaluate').value = 'True';
+	var theSec=new Sudoku();
+	anzSols=0;
+	for (var i=0; i<81; ++i) {
+		var o=document.getElementById("i"+i)
+		var v=o.value
+		if (v>="1" && v<="9") {
+			theSec.vlu(i, parseInt(v));
+		} else {
+			alert ("Sudoku niepoprawnie rozwiazane" + " " + (document.getElementById('nickname').value).trim());
+			document.getElementById("ergebnis").value = "false";
+			return false;
+		}
+	}
+	var rsp=theSec.sss();
+	var ans="<p>No solution<\/p>";
+	if (anzSols > 0) {
+		alert ("Sudoku rozwiazane " + " " + (document.getElementById('nickname').value).trim());
+		document.getElementById("ergebnis").value = "true";
+		return true;
+	} else {
+		ans=bs.cit();
+		alert ("Sudoku niepoprawnie rozwiazane" + " " + (document.getElementById('nickname').value).trim());
+		document.getElementById("ergebnis").value = "false";
+		return false;
+	}
+}
 function solveMySudoku()
 {
 	var style;

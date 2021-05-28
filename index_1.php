@@ -24,7 +24,7 @@
 <div id=sudoku>
 <table border=0>
 <tr><td>
-<center><h1 class=sudoku>Sudoku</h1></center>
+<center><h1 class=sudoku>sprÃ³buj rozwiÄ…zaÄ‡ sudoku tak szybko jak potrafisz :)</h1></center>
 </td></tr>
 <tr><td><center>
 
@@ -78,7 +78,7 @@ function getSudoku ()
 	$filename = "sudoku.txt";
 	$size = filesize ($filename);
 	$lines = $size / $ls;
-	$rand = rand(0, $lines); 
+	$rand = rand(0, $lines);
 	$handle = fopen ($filename, "r");
 	$pos = $ls * $rand;
 	fseek ($handle, $pos, SEEK_SET);
@@ -103,12 +103,12 @@ for ($x = 0; $x < 9; $x++)
 		{
 			$border = "border-right:2px solid #000000;";
 		} else {
-			$border = "";	
-		}	
+			$border = "";
+		}
 		if ($x == 2 || $x == 5)
 		{
 			$border .= "border-bottom:2px solid #000000;";
-		}	
+		}
 		// if (strlen ($sudoku[$count]) > 0 && $sudoku[$count] != " ")
 		if (intval($sudoku[$count]) > 0 )
 		{
@@ -126,20 +126,20 @@ echo "</table>";
 ?>
 </td></tr><tr><td height=28 valign=bottom>
 <center><form method=post>
-<nobr><input type="button" value="Lösung zeigen" onclick="solveMySudoku()">
-<input type="button" value="Prüfung" onclick="checkMySudoku()">
+<nobr><input type="button" value="Lï¿½sung zeigen" onclick="solveMySudoku()">
+<input type="button" value="Prï¿½fung" onclick="checkMySudoku()">
 <input type="submit" value="Neues Sudoku">
 <input type="button" value="Fertig" onclick="checkMySudoku2()"></nobr>
 </form></center>
 </td></tr>
 </table>
 <table width=100% border=0 cellspacing=0 cellpadding=0>
-<tr><td height=28 valign=top><a class=sudoku href=anleitung.html>Anleitung</a></td><td align=right valign=bottom>
+<tr><td height=28 valign=top><a class=sudoku href=instrukcja.html>Anleitung</a></td><td align=right valign=bottom>
 <!-- //
 	I request you retain the full copyright notice below including the link to www.m-software.de.
-	This not only gives respect to the amount of time given freely by the developers but also helps 
-	build interest, traffic and use of phpSudoku. If you cannot (for good reason) retain the full 
-	copyright we request you at least leave in place the phpSudoku by M-Software line, linked to 
+	This not only gives respect to the amount of time given freely by the developers but also helps
+	build interest, traffic and use of phpSudoku. If you cannot (for good reason) retain the full
+	copyright we request you at least leave in place the phpSudoku by M-Software line, linked to
 	www.m-software.de. Michael Jentsch: 2007
 // -->
 <a class=sudokumin href='http://www.m-software.de/phpSudoku.php'>phpSudoku by M-Software</a></td>
