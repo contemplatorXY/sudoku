@@ -27,49 +27,53 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=Windows-1250"/>
 </head>
 <body>
-<?
+<?php
 $clientip = $_SERVER["REMOTE_ADDR"];
 $remoteAgent = $_SERVER["HTTP_USER_AGENT"];
 $zeigloesung = $_GET["zeigloesung"];
 $res = trim($_POST["ergebnis"]);
+
 
 switch($_SERVER['REQUEST_METHOD'])
 {
 
 	case 'GET':
 		file_put_contents("./protokoll/clients."."txt",
-				date ( DATE_RFC822 ).
-				";".$clientip.
-				";"."ze-stresem".
-				";".$remoteAgent.
-				"\r\n", FILE_APPEND);
+			date ( DATE_RFC822 ).
+			";".$clientip.
+			";"."bez-stresu-simple".
+			";".$remoteAgent.
+			"\r\n", FILE_APPEND);
 		break;
 	case 'POST':
 		$wyniktext = "";
 		$nickname=trim($_POST["nickname"]);
 		$evaluate = trim($_POST["evaluate"]);
+		$uniqueid = trim($_POST["uniqueid"]);
+		$sudokunr = trim($_POST["sudokunr"]);
+
 		if (strlen($nickname) > 0 && $evaluate == "True") {
 			$isErgebnis = true;
 			$ok=null;
 			$restime = round(microtime(true)) - $_POST["beginn"];
-
-			if ($_POST["ergebnis"] == "true") {
+			// echo "nick ".$nickname." uniqueid ".$uniqueid." evaluate ".$evaluate." wynik ".$res.;
+			if ($res == "true") {
 				$wyniktext = "rozwi&#261;zanie poprawne w czasie ".$restime." sekund.";
 			} else {
 				$wyniktext = "rozwi&#261;zanie niepoprawne w czasie ".$restime." sekund.";
 			}
 
-
 			setSpielEnde(
-					date ( DATE_RFC822 ).
-					";".$clientip.
-					";".$nickname.
-					";".$nickname.
-					";"."ze-stresem".
-					";".$restime.
-					";".$res.
-					";".$remoteAgent,
-					$nickname);
+				date ( DATE_RFC822 ).
+				";".$clientip.
+				";".$nickname.
+				";".$uniqueid.
+				";"."bez-stresu-simple".
+				//";".$sudokunr.
+				";".$restime.
+				";".$res.
+				";".$remoteAgent,
+				$nickname."_".$uniqueid);
 			break;
 		}
 
@@ -92,9 +96,9 @@ function getUserName2 ($uuid)
 }
 
 function setSpielEnde($wynik, $nick) {
-	//file_put_contents("./protokoll/stress-".$nick.".txt", $wynik."\r\n", FILE_APPEND);
-	file_put_contents("./protokoll/wyniki".".txt", $wynik."\r\n", FILE_APPEND);
 
+	file_put_contents("./protokoll/wyniki".".txt", $wynik."\r\n", FILE_APPEND);
+	file_put_contents("./protokoll/uniqueids".".txt", date ( DATE_RFC822 ).";".$nick."\r\n", FILE_APPEND);
 }
 ?>
 
@@ -103,17 +107,16 @@ function setSpielEnde($wynik, $nick) {
 		<tr><td>
 				<center><h1 class=sudoku>Sudoku</h1></center>
 				<center><h3 class=sudoku>Eksperyment do pracy licencjackiej</h3></center>
-				<center><h3 class=sudoku>rozwi&#261;&#380; sudoku jak najszybciej!</h3></center>
+				<center><h3 class=sudoku>sprobuj rozwi&#261;za&#263; sudoku tak szybko, jak potrafisz :)</h3></center>
+
 				<? if ($evaluate == "True") {
 					echo "Dzi&#281;kuje za udzia&#322; w eksperymencie ".$nickname.".\r\nTw&#243;j wynik: ".$wyniktext;
+					//mail ( "ggaida@hotmail.de" , $nickname." rozwiazal sudoku", $wyniktext );
 				}
 				?>
 			</td></tr>
 		<tr><td><center>
 
-					<form name="theClock" method=post>
-						<input type=text name="theTime" id=clock size=8>
-					</form>
 					<script language="JavaScript">
 						<!--
 
@@ -156,25 +159,34 @@ function setSpielEnde($wynik, $nick) {
 				</center></td></tr>
 		<tr><td>
 				<?
+
 				function getSudoku ()
 				{
+					global $sudokunr;
 					// Fast and simple solution for big files
-					$ls = 164;
-					$filename = "sudoku.txt";
+					$ls = 165;
+					$filename = "verysimple.txt";
 					$size = filesize ($filename);
-					$lines = $size / $ls;
+					$lines = ($size / $ls)-1;
 					$rand = rand(0, $lines);
+					$sudokunr = $rand;
 					$handle = fopen ($filename, "r");
-					$pos = $ls * ($rand -1);
-					fseek ($handle, $pos, SEEK_SET);
-					$contents = fread ($handle, $ls);
+					$pos = $ls * $rand ;
+					fseek ($handle, $pos+1, SEEK_SET);
+					$contents = fgets($handle, $ls);
 					fclose ($handle);
+					$contents = trim($contents);
+					//$contents = substr($contents,1,strlen($contents) -3);
 					return $contents;
 				}
 
 				$sudokustr = getSudoku ();
 				$sudoku    = explode(";", $sudokustr);
 
+
+
+				//echo $sudokustr;
+				//echo "\r\n".strlen($sudokustr);
 				echo "<table cellspacing=0 cellpadding=1 border=0 bgcolor=#000000>";
 				$count = 0;
 				for ($x = 0; $x < 9; $x++)
@@ -194,8 +206,8 @@ function setSpielEnde($wynik, $nick) {
 						{
 							$border .= "border-bottom:2px solid #000000;";
 						}
-						// if (strlen ($sudoku[$count]) > 0 && $sudoku[$count] != " ")
-						if (intval($sudoku[$count]) > 0 )
+						if (strlen ($sudoku[$count]) > 0 && $sudoku[$count] != " ")
+						//if (intval($sudoku[$count]) > 0 )
 						{
 							$data = "value='" . $sudoku[$count] . "' readonly style='background:#DDDDDD; " . $border . "'";
 							echo "\r\n<input valign=middle type=text id=i" . $count . " name=i" . $count . " " . $data . " size=5 maxlength=5 class=cell onkeyup='fontsize(this, this.value)'>\r\n";
@@ -215,16 +227,18 @@ function setSpielEnde($wynik, $nick) {
 				<center><form method=post id="sudokuform" name="sudokuform">
 						<nobr>
 							<!--nobr><input type="submit" value="Inne Sudoku" style="font-size : 24px; width: 50%; height: 150px;"-->
-							<input type="button" value="Sprawd&#380;" onclick="checkMySudoku()" style="font-size : 24px; width: 50%; height: 150px;"></nobr>
-						<br><br><label style="font-size : 18px; width: 50%; height: 150px;">Tw&#243;j nick - dok&#322;adnie ten sam z pierwszego testu!:</label><br><br>
+							<input type="button" value="Sprawd&#378;" onclick="checkMySudoku()" style="font-size : 24px; width: 50%; height: 150px;"></nobr>
+						<br><br><label style="font-size : 18px; width: 50%; height: 150px;">Tw&#243;j nick name - zapami&#281;taj koniecznie na drugi test:</label><br><br>
 						<input type="text" border-radius="2px;" name="nickname" id="nickname" value=""  style="font-size : 18px; width: 50%; height: 50px;">
-						<br><br><br><input type="submit" value="Gotowe" onclick="checkMySudokuFinal()" style="font-size : 24px; width: 50%; height: 150px;"><br><br>
+						<br><br><br><input type="submit" value="Gotowe" onclick="checkMySudoku2()" style="font-size : 24px; width: 50%; height: 150px;"><br><br>
+						<!-- easter egg -->
 						<?
 						if ($zeigloesung == "True") { ?>
 							<input type="button" value="Poka&#380; rozwi&#261;zanie" onclick="solveMySudoku()">
 						<? }
 						?>
-
+						<input type="hidden" name="uniqueid" id="uniqueid" value="<? echo uniqid(); ?>" >
+						<input type="hidden" name="sudokunr" id="sudokunr" value="<? echo $sudokunr; ?>" >
 						<input type="hidden" name="ergebnis" id="ergebnis" value="false" >
 						<input type="hidden" name="evaluate" id="evaluate" value="false" >
 						<input type="hidden" name="beginn" id="beginn" value=<? echo "'".round(microtime(true))."'"; ?> >
@@ -233,9 +247,10 @@ function setSpielEnde($wynik, $nick) {
 	</table>
 
 	<table width=100% border=0 cellspacing=0 cellpadding=0>
-		<tr><td height=28 valign=top><a class=sudoku href=instrukcja.html>Instrukcja</a></td><td align=right valign=bottom>
-		<tr><td height=28 valign=top><a class=sudoku target=_blank href=https://docs.google.com/forms/d/e/1FAIpQLSd_xqJuy5Bo2q8JtluW9VdGqNTzVkYE5G9cm7uG6kcHc8ikxA/viewform>Ankieta</a></td><td align=right valign=bottom>
-		<a class=sudokumin href='http://ibgaida.de/sudoku'>Sudoku by Maja Kruszelnicka</a></td>
+		<tr>
+			<td height=28 valign=top><a class=sudoku href=instrukcja.html>Instrukcja</a></td>
+			<td align=right valign=bottom><a class=sudokumin href='http://ibgaida.de/sudoku'>Sudoku by Maja Kruszelnicka</a></td>
+			<!-- td class=sudokumin >sudoku <? echo $sudokunr ?> </td-->
 	</table>
 	<!-- //
 	I request you retain the full copyright notice below including the link to www.m-software.de.

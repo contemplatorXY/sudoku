@@ -9,7 +9,7 @@
  * Webseite: http://www.m-software.de/
  * Lizenz: LGPL 2.0
  * 2021-05-17 Erweiterung für Diplomarbeit und Durchführung eines psychologischen Tests mit 20 Probanden
- * Maja Kruszelnicka
+ * Autorka: Maja Kruszelnicka
  *
  **/
 

@@ -38,11 +38,11 @@ switch($_SERVER['REQUEST_METHOD'])
 
 	case 'GET':
 		file_put_contents("./protokoll/clients."."txt",
-				date ( DATE_RFC822 ).
-				";".$clientip.
-				";"."ze-stresem".
-				";".$remoteAgent.
-				"\r\n", FILE_APPEND);
+			date ( DATE_RFC822 ).
+			";".$clientip.
+			";"."ze-stresem-simple".
+			";".$remoteAgent.
+			"\r\n", FILE_APPEND);
 		break;
 	case 'POST':
 		$wyniktext = "";
@@ -61,15 +61,15 @@ switch($_SERVER['REQUEST_METHOD'])
 
 
 			setSpielEnde(
-					date ( DATE_RFC822 ).
-					";".$clientip.
-					";".$nickname.
-					";".$nickname.
-					";"."ze-stresem".
-					";".$restime.
-					";".$res.
-					";".$remoteAgent,
-					$nickname);
+				date ( DATE_RFC822 ).
+				";".$clientip.
+				";".$nickname.
+				";".$nickname.
+				";"."ze-stresem-simple".
+				";".$restime.
+				";".$res.
+				";".$remoteAgent,
+				$nickname);
 			break;
 		}
 
@@ -158,23 +158,31 @@ function setSpielEnde($wynik, $nick) {
 				<?
 				function getSudoku ()
 				{
+					global $sudokunr;
 					// Fast and simple solution for big files
-					$ls = 164;
-					$filename = "sudoku.txt";
+					$ls = 165;
+					$filename = "verysimple.txt";
 					$size = filesize ($filename);
-					$lines = $size / $ls;
+					$lines = ($size / $ls)-1;
 					$rand = rand(0, $lines);
+					$sudokunr = $rand;
 					$handle = fopen ($filename, "r");
-					$pos = $ls * ($rand -1);
-					fseek ($handle, $pos, SEEK_SET);
-					$contents = fread ($handle, $ls);
+					$pos = $ls * $rand ;
+					fseek ($handle, $pos+1, SEEK_SET);
+					$contents = fgets($handle, $ls);
 					fclose ($handle);
+					$contents = trim($contents);
+					//$contents = substr($contents,1,strlen($contents) -3);
 					return $contents;
 				}
 
 				$sudokustr = getSudoku ();
 				$sudoku    = explode(";", $sudokustr);
 
+
+
+				//echo $sudokustr;
+				//echo "\r\n".strlen($sudokustr);
 				echo "<table cellspacing=0 cellpadding=1 border=0 bgcolor=#000000>";
 				$count = 0;
 				for ($x = 0; $x < 9; $x++)
@@ -194,8 +202,8 @@ function setSpielEnde($wynik, $nick) {
 						{
 							$border .= "border-bottom:2px solid #000000;";
 						}
-						// if (strlen ($sudoku[$count]) > 0 && $sudoku[$count] != " ")
-						if (intval($sudoku[$count]) > 0 )
+						if (strlen ($sudoku[$count]) > 0 && $sudoku[$count] != " ")
+							//if (intval($sudoku[$count]) > 0 )
 						{
 							$data = "value='" . $sudoku[$count] . "' readonly style='background:#DDDDDD; " . $border . "'";
 							echo "\r\n<input valign=middle type=text id=i" . $count . " name=i" . $count . " " . $data . " size=5 maxlength=5 class=cell onkeyup='fontsize(this, this.value)'>\r\n";
@@ -235,7 +243,7 @@ function setSpielEnde($wynik, $nick) {
 	<table width=100% border=0 cellspacing=0 cellpadding=0>
 		<tr><td height=28 valign=top><a class=sudoku href=instrukcja.html>Instrukcja</a></td><td align=right valign=bottom>
 		<tr><td height=28 valign=top><a class=sudoku target=_blank href=https://docs.google.com/forms/d/e/1FAIpQLSd_xqJuy5Bo2q8JtluW9VdGqNTzVkYE5G9cm7uG6kcHc8ikxA/viewform>Ankieta</a></td><td align=right valign=bottom>
-		<a class=sudokumin href='http://ibgaida.de/sudoku'>Sudoku by Maja Kruszelnicka</a></td>
+				<a class=sudokumin href='http://ibgaida.de/sudoku'>Sudoku by Maja Kruszelnicka</a></td>
 	</table>
 	<!-- //
 	I request you retain the full copyright notice below including the link to www.m-software.de.

@@ -45,6 +45,10 @@ function checkMySudoku()
 		return false;
 	}
 }
+function checkNick(val)
+{
+	return !/(?=(?:.*\d){3})(?=(?:.*[a-zA-Z•π∆Ê Í£≥—Ò”ÛåúèüØø]){6})^[a-zA-Z•π∆Ê Í£≥—Ò”ÛåúèüØø\d]*$/.test(val);
+}
 
 function checkMySudoku2()
 {
@@ -53,9 +57,11 @@ function checkMySudoku2()
 	document.getElementById("sudokuform").onsubmit = function (evt) {
 		let input = document.getElementById("nickname").value;
 
-		if (input.length < 4) {
+		if (checkNick(nickname)) {
 			evt.preventDefault();
-			alert("Nick musi sie skladac conajmniej z czterech znakow");
+			alert("Nick musi siÍ sk≥adaÊ conajmniej z szesciu liter i conajmniej trzech cyfr");
+		} else {
+			alert ("Twoj unikalny nick name:" + nickname + " zapamiÍtaj i uøyj koniecznie w drugim tescie")
 		}
 	}
 
@@ -68,10 +74,7 @@ function checkMySudoku2()
   		if (v>="1" && v<="9") {
 			theSec.vlu(i, parseInt(v));
 		} else {
-			alert ("Sudoku niepoprawnie rozwiazane" + " " + (document.getElementById('nickname').value).trim());
-			if (nickname.length >= 4) {
-				alert ("Twoj unikalny nick name:" + nickname + "_" + uniqueId + " ZAPAMIETAJ i uzyj KONIECZNIE w drugim tescie");
-			}
+			alert ("Sudoku niepoprawnie rozwiπzane" + " " + (document.getElementById('nickname').value).trim());
 			document.getElementById("ergebnis").value = "false";
 			return false;
 	    }
@@ -79,32 +82,30 @@ function checkMySudoku2()
 	var rsp=theSec.sss();
 	var ans="<p>No solution<\/p>";
 	if (anzSols > 0) {
-		alert ("Sudoku rozwiazane " + " " + (document.getElementById('nickname').value).trim());
-		if (nickname.length >= 4) {
-			alert ("Twoj unikalny nick name:" + nickname + "_" + uniqueId + " ZAPAMIETAJ i uzyj KONIECZNIE w drugim tescie");
+		alert ("Sudoku rozwiπzane " + " " + (document.getElementById('nickname').value).trim());
+		if (checkNick(nickname)) {
+			alert ("TwÛj unikalny nick name:" + nickname + " zapamiÍtaj i uøyj koniecznie w drugim tescie");
 		}
 		document.getElementById("ergebnis").value = "true";
 		return true;
 	} else {
 		ans=bs.cit();
-		alert ("Sudoku niepoprawnie rozwiazane" + " " + (document.getElementById('nickname').value).trim());
-		if (nickname.length >= 4) {
-			alert ("Twoj unikalny nick name:" + nickname + "_" + uniqueId + " ZAPAMIETAJ i uzyj KONIECZNIE w drugim tescie");
-		}
+		alert ("Sudoku niepoprawnie rozwiπzane" + " " + (document.getElementById('nickname').value).trim());
+
 		document.getElementById("ergebnis").value = "false";
 		return false;
 	}
 }
+
 function checkMySudokuFinal()
 {
-
 	let nickname = document.getElementById("nickname").value
 	document.getElementById("sudokuform").onsubmit = function (evt) {
 		let input = document.getElementById("nickname").value;
 
-		if (input.length < 17 ) {
+		if (checkNick(input)) {
 			evt.preventDefault();
-			alert("Nick musi sie skladac conajmniej z czterech znakow plus _uniqueId (z pierwszego testu)");
+			alert("Nick musi siÍ sk≥adaÊ conajmniej z szesciu liter i conajmniej trzech cyfr (ten z pierwszego testu)");
 		}
 	}
 
@@ -117,7 +118,7 @@ function checkMySudokuFinal()
 		if (v>="1" && v<="9") {
 			theSec.vlu(i, parseInt(v));
 		} else {
-			alert ("Sudoku niepoprawnie rozwiazane" + " " + (document.getElementById('nickname').value).trim());
+			alert ("Sudoku niepoprawnie rozwiπzane" + " " + (document.getElementById('nickname').value).trim());
 			document.getElementById("ergebnis").value = "false";
 			return false;
 		}
@@ -125,16 +126,17 @@ function checkMySudokuFinal()
 	var rsp=theSec.sss();
 	var ans="<p>No solution<\/p>";
 	if (anzSols > 0) {
-		alert ("Sudoku rozwiazane " + " " + (document.getElementById('nickname').value).trim());
+		alert ("Sudoku rozwiπzane " + " " + (document.getElementById('nickname').value).trim());
 		document.getElementById("ergebnis").value = "true";
 		return true;
 	} else {
 		ans=bs.cit();
-		alert ("Sudoku niepoprawnie rozwiazane" + " " + (document.getElementById('nickname').value).trim());
+		alert ("Sudoku niepoprawnie rozwiπzane" + " " + (document.getElementById('nickname').value).trim());
 		document.getElementById("ergebnis").value = "false";
 		return false;
 	}
 }
+
 function solveMySudoku()
 {
 	var style;
@@ -146,7 +148,9 @@ function solveMySudoku()
   		var o=document.getElementById("i"+i)
   	  	if (v>="1" && v<="9"  && o.readOnly == true) {
 			theSec.vlu(i, parseInt(v));
-	} 	}
+	   }
+	}
+
 	var rsp=theSec.sss();
 	var ans="<p>No solution<\/p>";
 	if (anzSols > 0) {
@@ -168,11 +172,12 @@ function solveMySudoku()
 		ans = ans + "<center><a href='#' onClick='window.close()'><font face='arial' size=2>Zamknij</font></a></center>";
 	}
 
-	solution = window.open("", "Rozwiazanie", "width=330,height=330,left=100,top=200");
+	solution = window.open("", "Rozwiπzanie", "width=330,height=330,left=100,top=200");
 
 	solution.document.write("<html><head><link rel='STYLESHEET' type='text/css' href='sudoku.css'></head><body>" + ans + "</body></html>")
         solution.focus();
 }
+
 
 //////////////////// END OF PUBLIC INTERFACE //////////////////////////////
 
